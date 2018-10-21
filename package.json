@@ -1,0 +1,20 @@
+{
+    "name": "pottercom.js",
+    "title": "Pottercom",
+    "description": "Fancy dress for your intercom",
+    "version": "1",
+    "main": "src/index.js",
+    "homepage": "https://www.finimize.com",
+    "author": {
+        "name": "Finimize"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/jquery/jquery.git"
+    },
+    "keywords": [
+        "pottercom",
+        "intercom",
+        "browser"
+    ]
+}
