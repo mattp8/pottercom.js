@@ -2,7 +2,7 @@
     "name": "pottercom.js",
     "title": "Pottercom",
     "description": "Fancy dress for your intercom",
-    "version": "1.0.0",
+    "version": "1.0",
     "main": "src/index.js",
     "homepage": "https://www.finimize.com",
     "author": {
