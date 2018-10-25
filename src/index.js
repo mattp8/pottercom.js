@@ -1,43 +1,30 @@
-// hide bolt overlap
 function hideBolt() {
-  const potterbolt = document.getElementById("potter-bolt")
-  potterbolt.style.display = "none"
+  const a = document.getElementById("potter-bolt"),
+    b = document.getElementById("potter-hat"),
+    c = window.innerWidth
+  ;(a.style.display = "none"), 670 > c && (b.style.display = "none")
 }
-// show the bolt when modal goes
 function showBolt() {
-  const potterbolt = document.getElementById("potter-bolt")
-  potterbolt.style.display = "block"
+  const a = document.getElementById("potter-bolt"),
+    b = document.getElementById("potter-hat")
+  ;(a.style.display = "block"), (b.style.display = "block")
 }
-
-// check to see if the intercom changes to screen mode
 function observeIntercom() {
-  const intercom = document.getElementById("intercom-container")
-
-  const observer = new MutationObserver(mutations => {
-    mutations.forEach(d => {
-      if (
-        d.addedNodes.length === 1 &&
-        d.addedNodes[0].className ===
-          "intercom-messenger-frame intercom-messenger-frame-enter intercom-messenger-frame-enter-active"
-      ) {
-        hideBolt()
-      } else if (d.removedNodes.length === 1) {
-        showBolt()
-      }
+  const a = document.getElementById("intercom-container"),
+    b = new MutationObserver(c => {
+      c.forEach(e => {
+        1 === e.addedNodes.length &&
+        "intercom-messenger-frame intercom-messenger-frame-enter intercom-messenger-frame-enter-active" ===
+          e.addedNodes[0].className
+          ? hideBolt()
+          : 1 === e.removedNodes.length && showBolt()
+      })
     })
-  })
-
-  // Observe the intercom
-  observer.observe(intercom, {
-    attributes: true,
-    childList: true,
-    subtree: true
-  })
+  b.observe(a, { attributes: !0, childList: !0, subtree: !0 })
 }
-
 function createPotter() {
-  const bolt = `
-  <img src="https://raw.githubusercontent.com/mattp8/pottercom/master/static/potter-hat.png" style="width:65px; height:auto; pointer-events:none;" /> 
+  const a = `
+  <img id="potter-hat" src="https://raw.githubusercontent.com/mattp8/pottercom/master/static/potter-hat.png" style="width:65px; height:auto; pointer-events:none;" /> 
   <svg id="potter-bolt" style="position:absolute; top:58px; left:28px; z-index:99999;" width="6px" height="9px" viewBox="0 0 6 9" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
       <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
           <g id="pottercomBolt" transform="translate(-115.000000, -153.000000)" fill="#000000">
@@ -50,43 +37,32 @@ function createPotter() {
               </g>
           </g>
       </g>
-  </svg>`
-
-  const intercom = document.getElementById("intercom-container")
-
-  const div = document.createElement("div")
-  div.setAttribute(
+  </svg>`,
+    b = document.getElementById("intercom-container"),
+    c = document.createElement("div")
+  c.setAttribute(
     "style",
     "position:fixed; z-index:99999999999999; bottom:51px; right:10px; height:70px; width:70px; pointer-events:none;"
   )
-  const wrapper = document.createElement("div")
-  wrapper.setAttribute("id", "pottercom")
-  wrapper.setAttribute(
-    "style",
-    "position:relative; z-index:99999999999999; top:0; right:0; overflow:hidden; height:100%; width:70px; pointer-events:none;"
-  )
-
-  // append elements to body
-  intercom.appendChild(div)
-  div.appendChild(wrapper)
-  wrapper.innerHTML += bolt
-  const potterbolt = document.getElementById("pottercomBolt")
-
-  const boltcolor = window.potterconfig ? window.potterconfig.color : "#000"
-  potterbolt.setAttribute("style", `fill:${boltcolor}`)
+  const e = document.createElement("div")
+  e.setAttribute("id", "pottercom"),
+    e.setAttribute(
+      "style",
+      "position:relative; z-index:99999999999999; top:0; right:0; overflow:hidden; height:100%; width:70px; pointer-events:none;"
+    ),
+    b.appendChild(c),
+    c.appendChild(e),
+    (e.innerHTML += a)
+  const f = document.getElementById("pottercomBolt"),
+    g = window.potterconfig ? window.potterconfig.color : "#000"
+  f.setAttribute("style", `fill:${g}`)
 }
-
 const checkExist = setInterval(() => {
-  let count = 0
-
-  if (count < 10) {
-    const intercom = document.getElementById("intercom-container")
-
-    if (intercom !== null) {
-      createPotter()
-      observeIntercom()
-      clearInterval(checkExist)
-    }
-    count += 1
+  let a = 0
+  if (10 > a) {
+    const b = document.getElementById("intercom-container")
+    null !== b &&
+      (createPotter(), observeIntercom(), clearInterval(checkExist)),
+      (a += 1)
   }
 }, 100)
