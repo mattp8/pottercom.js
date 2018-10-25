@@ -1,32 +1,44 @@
-var checkExist = setInterval(function() {
-    var a = document.getElementById("intercom-container")
-    null !== a && (createPotter(), observeIntercom(), clearInterval(checkExist))
-  }, 100)
-  function hideBolt() {
-    var a = document.getElementById("pottercom")
-    a.style.height = "55px"
-  }
-  function showBolt() {
-    var a = document.getElementById("pottercom")
-    a.style.height = "70px"
-  }
-  function observeIntercom() {
-    var a = document.getElementById("intercom-container"),
-      b = new MutationObserver(function(c) {
-        c.forEach(function(d) {
-          1 === d.addedNodes.length &&
-          "intercom-messenger-frame intercom-messenger-frame-enter intercom-messenger-frame-enter-active" ===
-            d.addedNodes[0].className
-            ? hideBolt()
-            : 1 === d.removedNodes.length && showBolt()
-        })
-      })
-    b.observe(a, { attributes: !0, childList: !0, subtree: !0 })
-  }
-  function createPotter() {
-    var a = `
-  <img src="https://gallery.mailchimp.com/fd92d4d6912bf051aceebbc27/images/8cd89ef2-eaf7-4696-a826-7e8b92c8c293.png" style="width:60px; height:auto; pointer-events:none;" /> 
-  <svg style="position:absolute; top:56px; left:23px; z-index:99999;" width="6px" height="9px" viewBox="0 0 6 9" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+// hide bolt overlap
+function hideBolt() {
+  const potterbolt = document.getElementById('potter-bolt');
+  potterbolt.style.display = 'none';
+}
+// show the bolt when modal goes
+function showBolt() {
+  const potterbolt = document.getElementById('potter-bolt');
+  potterbolt.style.display = 'block';
+}
+
+// check to see if the intercom changes to screen mode
+function observeIntercom() {
+  const intercom = document.getElementById('intercom-container');
+
+  const observer = new MutationObserver(mutations => {
+    mutations.forEach(d => {
+      if (
+        d.addedNodes.length === 1 &&
+        d.addedNodes[0].className ===
+          'intercom-messenger-frame intercom-messenger-frame-enter intercom-messenger-frame-enter-active'
+      ) {
+        hideBolt();
+      } else if (d.removedNodes.length === 1) {
+        showBolt();
+      }
+    });
+  });
+
+  // Observe the intercom
+  observer.observe(intercom, {
+    attributes: true,
+    childList: true,
+    subtree: true,
+  });
+}
+
+function createPotter() {
+  const bolt = `
+  <img src="https://raw.githubusercontent.com/mattp8/pottercom/master/static/potter-hat.png" style="width:65px; height:auto; pointer-events:none;" /> 
+  <svg id="potter-bolt" style="position:absolute; top:57px; left:28px; z-index:99999;" width="6px" height="9px" viewBox="0 0 6 9" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
       <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
           <g id="pottercomBolt" transform="translate(-115.000000, -153.000000)" fill="#000000">
               <g id="Group" transform="translate(95.000000, 99.000000)">
@@ -38,24 +50,43 @@ var checkExist = setInterval(function() {
               </g>
           </g>
       </g>
-  </svg>`,
-      b = document.getElementById("intercom-container"),
-      c = document.createElement("div")
-    c.setAttribute(
-      "style",
-      "position:fixed; z-index:99999999999999; bottom:58px; right:15px; height:60px; width:60px; pointer-events:none;"
-    )
-    var d = document.createElement("div")
-    d.setAttribute("id", "pottercom"),
-      d.setAttribute(
-        "style",
-        "position:relative; z-index:99999999999999; top:0; right:0; overflow:hidden; height:70px; width:60px; pointer-events:none;"
-      ),
-      b.appendChild(c),
-      c.appendChild(d),
-      (d.innerHTML += a)
-    var e = document.getElementById("pottercomBolt"),
-      f = potterconfig ? potterconfig.color : "#000"
-    e.setAttribute("style", "fill:" + f)
+  </svg>`;
+
+  const intercom = document.getElementById('intercom-container');
+
+  const div = document.createElement('div');
+  div.setAttribute(
+    'style',
+    'position:fixed; z-index:99999999999999; bottom:49px; right:10px; height:70px; width:70px; pointer-events:none;',
+  );
+  const wrapper = document.createElement('div');
+  wrapper.setAttribute('id', 'pottercom');
+  wrapper.setAttribute(
+    'style',
+    'position:relative; z-index:99999999999999; top:0; right:0; overflow:hidden; height:100%; width:70px; pointer-events:none;',
+  );
+
+  // append elements to body
+  intercom.appendChild(div);
+  div.appendChild(wrapper);
+  wrapper.innerHTML += bolt;
+  const potterbolt = document.getElementById('pottercomBolt');
+
+  const boltcolor = window.potterconfig ? window.potterconfig.color : '#000';
+  potterbolt.setAttribute('style', `fill:${boltcolor}`);
+}
+
+const checkExist = setInterval(() => {
+  let count = 0;
+
+  if (count < 10) {
+    const intercom = document.getElementById('intercom-container');
+
+    if (intercom !== null) {
+      createPotter();
+      observeIntercom();
+      clearInterval(checkExist);
+    }
+    count += 1;
   }
-  
+}, 100);
